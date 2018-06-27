@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName "Restricted Files"
+AuthUserFile  /var/www/passwords/muvfile
+Require valid-user

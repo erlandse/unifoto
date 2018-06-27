@@ -1,0 +1,105 @@
+{
+  "settings": {
+    "index": {
+      "number_of_shards": "1",
+      "number_of_replicas": "1"
+    }
+  },
+  "mappings": {
+    "billede": {
+      "properties": {
+        "dokId": {
+          "type": "integer"
+        },          
+        "alledata":{
+          "type":"text",
+          "fielddata": true,          
+          "analyzer":"standard"
+        },
+        "persondata": {
+          "type": "keyword",
+          "store": true
+        },
+        "personText": {
+          "type":"text",
+          "fielddata": true,          
+          "store": true
+        },
+        "foto_kort_id": {
+          "type": "integer",
+          "store": true
+        },
+        "fra_År": {
+          "type": "integer"
+        },
+        "til_År": {
+          "type": "integer"
+        },
+
+        "sted": {
+          "type": "text",
+          "fielddata": true,          
+          "analyzer":"standard"
+        },
+        "stedKommentar": {
+          "type": "text",
+          "fielddata": true,          
+          "analyzer": "norwegian"
+        },
+        "stedListe": {
+          "type": "keyword",
+          "store" : true
+        },
+        "motiv": {
+          "type": "text",
+          "analyzer": "norwegian"
+        },
+        "tema": {
+          "type": "keyword",
+          "store": true
+        },
+        "mediagruppe_enhets_id": {
+          "type": "integer"
+        },
+
+        "datering_dato": {
+          "type": "date",
+          "store": true
+        },
+        "fotograf": {
+          "type": "text",
+          "analyzer": "norwegian"
+        },
+
+        "annen_info": {
+          "type": "text",
+          "analyzer": "norwegian"
+        },
+        "kan_webpubliseres": {
+          "type": "keyword",
+          "store": true
+        },
+        "filnavn": {
+          "type": "keyword",
+          "store": true
+        },
+        "sjanger": {
+          "type": "keyword",
+          "store": true
+        },
+        "registrert_dato": {
+          "type": "date",
+          "format": "yyyy-MM-dd"
+        },
+        "internKommentar": {
+          "type": "text",
+          "analyzer": "norwegian"
+        },
+        "bruker": {
+          "type": "keyword",
+          "store": true
+        }
+      }
+    }
+  }
+}
