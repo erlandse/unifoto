@@ -212,7 +212,6 @@ function continueUpload(data) {
     wheelInstance2 = new Wheel('wheelInstance2', 'wordwheel_div', 'ul', 'lookupIndex2', 'topicId');
     wheelInstance3 = new Wheel('wheelInstance3', 'wheel2', 'ul2', 'lookupIndex3', 'namesId');
     wheelInstance4 = new Wheel('wheelInstance4', 'wheel4', 'ul4', 'lookupIndex4', 'stedListeId');
-    wheelInstance5 = new Wheel('wheelInstance5', 'wheel5', 'ul5', 'lookupIndex5', 'fotograf');
     document.getElementById('tagline').innerHTML = "";
     resize2();
 }
@@ -230,22 +229,6 @@ function lookupIndex4(string) {
     document.getElementById('stedListeId').value = string;
     wheelInstance4.hideOverlay();
     //  addName();
-}
-function lookupIndex5(string) {
-    document.getElementById('fotograf').value = string;
-    wheelInstance5.hideOverlay();
-    //  addFotograf();
-}
-function addFotoRolle() {
-    //xxx
-    var str = document.getElementById('fotograf').value + "#" + document.getElementById('rolleSelect').value;
-    var sel = document.getElementById("fotografSelect");
-    for (var temp = 0; temp < sel.length; temp++)
-        if (sel.options[temp].value == str)
-            return;
-    document.getElementById('fotograf').value = "";
-    Tools.addOption(sel, str, str);
-    changed = true;
 }
 function addName() {
     var str = document.getElementById('namesId').value;
@@ -279,10 +262,6 @@ function deleteTopic() {
     Tools.removeOptionSelected("topicSelect");
     changed = true;
 }
-function deleteFotograf() {
-    Tools.removeOptionSelected("fotografSelect");
-    changed = true;
-}
 function postPhp(formData, callBack) {
     $.ajax({
         url: Tools.urlToNode + "PassPost",
@@ -312,22 +291,20 @@ function postPhp(formData, callBack) {
   });
 }
 */
-/*
 function postAndGetPhp(formData, callBack) {
-  $.ajax({
-    url: "postandget.php",
-    type: 'post',
-    data: formData,
-    error: function (XMLHttpRequest, textStatus, errorThrown) {
-      alert('status:' + XMLHttpRequest.status + ', status text: ' + XMLHttpRequest.statusText + " errorthrown " + errorThrown);
-    },
-    success: function (data) {
-      callBack(data);
-    },
-    dataType: "json"
-  });
+    $.ajax({
+        url: "postandget.php",
+        type: 'post',
+        data: formData,
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert('status:' + XMLHttpRequest.status + ', status text: ' + XMLHttpRequest.statusText + " errorthrown " + errorThrown);
+        },
+        success: function (data) {
+            callBack(data);
+        },
+        dataType: "json"
+    });
 }
-*/
 function insertContentIntoTable(tableId, label, content, label_result) {
     if (content == "")
         return;
@@ -378,7 +355,6 @@ function clearFields() {
     document.getElementById('internKommentar').value = "";
     Tools.removeAllOptions("topicSelect");
     Tools.removeAllOptions("nameSelect");
-    Tools.removeAllOptions("fotografSelect");
     Tools.removeAllOptions("koblingSelect");
     document.getElementById('fromYearId').value = "";
     document.getElementById('toYearId').value = "";
@@ -408,20 +384,15 @@ function insertFields() {
     for (var temp = 0; temp < arr.length; temp++) {
         Tools.addOption(elSel, arr[temp], arr[temp]);
     }
+    64;
     arr = elastic.getArrayFromDoc(doc, "persondata");
     elSel = document.getElementById('nameSelect');
-    for (var temp = 0; temp < arr.length; temp++) {
-        Tools.addOption(elSel, arr[temp], arr[temp]);
-    }
-    arr = elastic.getArrayFromDoc(doc, "fotografRolle");
-    elSel = document.getElementById('fotografSelect');
     for (var temp = 0; temp < arr.length; temp++) {
         Tools.addOption(elSel, arr[temp], arr[temp]);
     }
     document.getElementById('fromYearId').value = elastic.getSingleFieldFromDoc(doc, "datering_fra");
     document.getElementById('toYearId').value = elastic.getSingleFieldFromDoc(doc, "datering_til");
     document.getElementById('registeredYearId').value = elastic.getSingleFieldFromDoc(doc, "datering_dato");
-    //  (<any>document.getElementById('fotograf')).value = elastic.getSingleFieldFromDoc(doc, "fotograf");
     if (elastic.getSingleFieldFromDoc(doc, "old_foto_kort_id") == 0)
         document.getElementById('foto_kort_id').value = elastic.getSingleFieldFromDoc(doc, "foto_kort_id");
     else
@@ -432,23 +403,53 @@ function insertFields() {
     document.getElementById('sjangerSelect').value = elastic.getSingleFieldFromDoc(doc, "sjanger");
     document.getElementById('registrert_dato').value = elastic.getSingleFieldFromDoc(doc, "registrert_dato");
     document.getElementById('brukerId').value = elastic.getSingleFieldFromDoc(doc, "bruker");
-    if (elastic.getSingleFieldFromDoc(doc, "analog") == 1)
-        document.getElementById('analogt').value = "Ja";
+    /*if (elastic.getSingleFieldFromDoc(doc, "analog") == 1)
+    (<HTMLInputElement>document.getElementById('analogt')).value = "Ja";
     else
-        document.getElementById('analogt').value = "Nei";
+    (<HTMLInputElement>document.getElementById('analogt')).value = "Nei";
     if (elastic.getSingleFieldFromDoc(doc, "positiv") == 1)
-        document.getElementById('positivt').value = "Ja";
+    (<HTMLInputElement>document.getElementById('positivt')).value = "Ja";
     else
-        document.getElementById('positivt').value = "Nei";
-    document.getElementById('materiale').value = elastic.getSingleFieldFromDoc(doc, "materiale");
+    (<HTMLInputElement>document.getElementById('positivt')).value = "Nei";
+    (<HTMLInputElement>document.getElementById('materiale')).value = elastic.getSingleFieldFromDoc(doc, "materiale");*/
     changed = false;
     setPhoto();
     hasMotherChildren(doc._source);
+    //http://musit-win-p01.uio.no/api/media/mediagroups/14267691/persons
+    //mediagruppe_enhets_id
+    var st = "http://musit-win-p01.uio.no/api/media/mediagroups/" + elastic.getSingleFieldFromDoc(doc, "mediagruppe_enhets_id") + "/persons";
+    var formData = new Object();
+    formData.url = st;
+    postAndGetPhp(formData, appendPhotograph);
+}
+function appendPhotograph(data) {
+    Tools.removeAllOptions("fotografList");
+    var sel = document.getElementById("fotografList");
+    for (var temp = 0; temp < data.length; temp++)
+        Tools.addOption(sel, data[temp].name + ": " + data[temp].role, data[temp].role);
+    var formData = new Object();
+    var st = "http://musit-win-p01.uio.no/api/media/mediagroups/" + elastic.getSingleFieldFromDoc(doc, "mediagruppe_enhets_id") + "/analogInfo";
+    formData.url = st;
+    postAndGetPhp(formData, appendAnalogInfo);
+    //    getURL(st);
+    //xxx
+}
+function appendAnalogInfo(data) {
+    document.getElementById('analogt').value = "";
+    document.getElementById('positivt').value = "";
+    document.getElementById('materiale').value = "";
+    if (data.length == 0)
+        return;
+    document.getElementById('analogt').value = "ja";
+    document.getElementById('positivt').value = data[0].positive;
+    document.getElementById('materiale').value = data[0].baseMaterial;
 }
 function setPhoto() {
     document.getElementById('photoCalculate').onload = function () {
         calculatePhotoSize(document.getElementById("photo").clientHeight, document.getElementById("photo").clientWidth, 'photoId');
     };
+    if (elastic == null)
+        return;
     var filename = encodeURIComponent(elastic.getSingleFieldFromDoc(doc, "filnavn"));
     document.getElementById('photoCalculate').src = "http://www.unimus.no/felles/bilder/web_hent_bilde.php?filename=" + filename + "&type=jpeg&";
     document.getElementById('photoId').src = "http://www.unimus.no/felles/bilder/web_hent_bilde.php?filename=" + filename + "&type=jpeg&";
@@ -475,20 +476,6 @@ function isISODate() {
     }
     else
         return false;
-}
-function saveFotograf(ob) {
-    var fotoRolle = new Array();
-    var sel = document.getElementById('fotografSelect');
-    for (var temp = 0; temp < sel.options.length; temp++)
-        fotoRolle.push(sel.options[temp].value);
-    var fotoNames = new Array();
-    for (var temp = 0; temp < sel.options.length; temp++) {
-        var pos = sel.options[temp].value.indexOf("#");
-        fotoNames.push(sel.options[temp].value.substring(0, pos));
-    }
-    ob.fotograf = fotoNames;
-    ob.fotografRolle = fotoRolle;
-    return ob;
 }
 function savePostOldFashion(toContinue) {
     var ob = JsonTool.cloneJSON(doc._source);
@@ -521,8 +508,6 @@ function savePostOldFashion(toContinue) {
         ob.datering_dato = document.getElementById('registeredYearId').value;
     else
         delete (ob.datering_dato);
-    ob = saveFotograf(ob);
-    // ob.fotograf = (<any>document.getElementById('fotograf')).value;
     ob.sjanger = document.getElementById('sjangerSelect').value;
     ob.kan_webpubliseres = document.getElementById('kan_webpubliseres').value;
     ob.internKommentar = document.getElementById('internKommentar').value;
@@ -714,38 +699,6 @@ function changeSubjectWordwheel(event) {
         wheelInstance2.hideOverlay();
     }
 }
-function changeFotoWordwheel(event) {
-    if (wheelInstance5.handleWheel(event) == true)
-        return;
-    var str = document.getElementById('fotograf').value;
-    if (str.length > 0) {
-        fotoListQuery.tags.terms.include = str + ".*";
-        var query = new Object();
-        query.aggs = fotoListQuery;
-        query.size = 0;
-        var formData = new Object();
-        formData.elasticdata = query;
-        formData.resturl = "unifotobase/billede/_search";
-        $.ajax({
-            url: Tools.urlToNode + "PassPost",
-            type: 'post',
-            data: formData,
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                alert('status:' + XMLHttpRequest.status + ', status text: ' + XMLHttpRequest.statusText + " errorthrown " + errorThrown);
-            },
-            success: function (data) {
-                var el = new ElasticClass(data);
-                var ar = el.getFacetFieldWithFacetName("tags");
-                wheelInstance5.fillFacets(ar);
-            },
-            dataType: "json"
-        });
-    }
-    else {
-        wheelInstance5.clearUl();
-        wheelInstance5.hideOverlay();
-    }
-}
 function resize2() {
     if (wheelInstance2 != null) {
         wheelInstance2.followObject(document.getElementById('topicId'), 0, 24);
@@ -755,9 +708,6 @@ function resize2() {
     }
     if (wheelInstance4 != null) {
         wheelInstance4.followObject(document.getElementById('stedListeId'), 0, 24);
-    }
-    if (wheelInstance5 != null) {
-        wheelInstance5.followObject(document.getElementById('fotograf'), 0, 24);
     }
     setPhoto();
 }
@@ -892,8 +842,6 @@ function clearWheels() {
     wheelInstance3.hideOverlay();
     wheelInstance4.clearUl();
     wheelInstance4.hideOverlay();
-    wheelInstance5.clearUl();
-    wheelInstance5.hideOverlay();
     document.getElementById('delSted').value = "";
 }
 /*
@@ -1027,4 +975,25 @@ function hasChildrenResult(data) {
         document.getElementById('harKoblingerId').innerHTML = "";
     else
         document.getElementById('harKoblingerId').innerHTML = "**";
+}
+function getURL(url) {
+    $.ajax({
+        url: url,
+        type: 'get',
+        dataType: "jsonp",
+        //        crossDomain: true,
+        complete: function (data) {
+            alert("complete " + JSON.stringify(data, null, 2));
+        },
+        //        error: function (XMLHttpRequest, textStatus, errorThrown) {
+        error: function (data) {
+            //            alert("error "+JSON.stringify(data,null,2));
+        },
+        success: function (data) {
+            //          alert("hallo" +JSON.stringify(data, null, 2));
+        },
+    });
+}
+function test(data) {
+    alert("hest");
 }

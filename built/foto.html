@@ -9,7 +9,8 @@
  
   <!--link href="all.css" type="text/css" rel="stylesheet"/-->
   <link href="foto.css"title="gjenstandcss" rel="stylesheet" type="text/css">
-  <script type="text/javascript" charset="utf-8" src="https://app.uio.no/hf/ft/jquery/jquery.js"></script>
+  <!--script type="text/javascript" charset="utf-8" src="https://app.uio.no/hf/ft/jquery/jquery.js"></script-->
+  <script type="text/javascript" charset="utf-8" src="jquery.js"></script>
   <script type="text/javascript" charset="utf-8" src="foto.js"></script>
   <script type="text/javascript" charset="utf-8" src="JsonTool.js"></script>
   <script type="text/javascript" charset="utf-8" src="ElasticClass.js"></script>
@@ -91,17 +92,8 @@
         <tr><td class='labelClass'>Koblinger:<span id='harKoblingerId' style='color:red'></span></td><td align='left'><input   type='text'  size='15'  id='koblingText' align='left'><input type='button' value='>>' onclick='addKobling()'></td>
           <td><select id='koblingSelect'></select><br><input type='button' value='Slett' onclick='deleteKobling()'/></td></tr>
           
-      <tr><td class='labelClass'>Fotograf:</td><td><input type='text'  size='20'  id='fotograf' onkeyup='changeFotoWordwheel(event)'/>&nbsp;&nbsp;
-      <select id='rolleSelect'>
-          <option value="Fotograf, sikker">Fotograf, sikker</option>
-          <option value="Fotograf, antatt, usikker">Fotograf, antatt, usikker</option>
-          <option value="Reprofotograf">Reprofotograf</option>
-          <option value="Skanneroperatør">Skanneroperatør</option>
-      </select>
-      <br>
-      <input type='button' value='>>' onclick='addFotoRolle()'>
-      </td>
-      <td><select id='fotografSelect'></select><br><input type='button' value='Slett' onclick='deleteFotograf()'/></td></tr></td></tr>
+      <tr><td class='labelClass'>Fotograf:</td>
+      <td colspan='2'><select id='fotografList'></select></td></tr>
       <tr>
        <td class='labelClass'>Registrering</td><td><input   type='text'  size='20'  id='registrert_dato' disabled/></td><td>Bruker:<input   type='text'  size='20'  id='brukerId' disabled/> </td>
       </tr>

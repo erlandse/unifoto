@@ -2,103 +2,152 @@
   "settings": {
     "index": {
       "number_of_shards": "1",
-      "number_of_replicas": "1"
+      "number_of_replicas": "1",
+      "max_result_window": "500000"
     }
   },
   "mappings": {
     "billede": {
       "properties": {
-        "dokId": {
-          "type": "integer"
-        },          
-        "alledata":{
-          "type":"text",
-          "fielddata": true,          
-          "analyzer":"standard"
-        },
-        "persondata": {
-          "type": "keyword",
-          "store": true
-        },
-        "personText": {
-          "type":"text",
-          "fielddata": true,          
-          "store": true
-        },
-        "foto_kort_id": {
-          "type": "integer",
-          "store": true
-        },
-        "fra_År": {
-          "type": "integer"
-        },
-        "til_År": {
-          "type": "integer"
-        },
-
-        "sted": {
-          "type": "text",
-          "fielddata": true,          
-          "analyzer":"standard"
-        },
-        "stedKommentar": {
-          "type": "text",
-          "fielddata": true,          
-          "analyzer": "norwegian"
-        },
-        "stedListe": {
-          "type": "keyword",
-          "store" : true
-        },
-        "motiv": {
-          "type": "text",
-          "analyzer": "norwegian"
-        },
-        "tema": {
-          "type": "keyword",
-          "store": true
-        },
-        "mediagruppe_enhets_id": {
-          "type": "integer"
-        },
-
-        "datering_dato": {
-          "type": "date",
-          "store": true
-        },
-        "fotograf": {
-          "type": "text",
-          "analyzer": "norwegian"
-        },
-
-        "annen_info": {
-          "type": "text",
-          "analyzer": "norwegian"
-        },
-        "kan_webpubliseres": {
-          "type": "keyword",
-          "store": true
-        },
-        "filnavn": {
-          "type": "keyword",
-          "store": true
-        },
-        "sjanger": {
-          "type": "keyword",
-          "store": true
-        },
-        "registrert_dato": {
-          "type": "date",
-          "format": "yyyy-MM-dd"
-        },
-        "internKommentar": {
-          "type": "text",
-          "analyzer": "norwegian"
-        },
-        "bruker": {
-          "type": "keyword",
-          "store": true
-        }
+        "alledata": {
+            "type": "text",
+            "analyzer": "standard",
+            "fielddata": true
+          },
+          "analog": {
+            "type": "integer",
+            "store": true
+          },
+          "annen_info": {
+            "type": "text",
+            "analyzer": "norwegian"
+          },
+          "bruker": {
+            "type": "keyword",
+            "store": true
+          },
+          "datering_dato": {
+            "type": "date",
+            "store": true
+          },
+          "datering_fra": {
+            "type": "keyword",
+            "store": true
+          },
+          "datering_til": {
+            "type": "keyword",
+            "store": true
+          },
+          "dokId": {
+            "type": "integer"
+          },
+          "eksternKommentar": {
+            "type": "text",
+            "analyzer": "norwegian"
+          },
+          "filnavn": {
+            "type": "keyword",
+            "store": true
+          },
+          "foto_kort_id": {
+            "type": "integer",
+            "store": true
+          },
+          "fotograf": {
+            "type": "keyword",
+            "store": true
+          },
+          "fotografRolle": {
+            "type": "keyword",
+            "store": true
+          },
+          "fra_År": {
+            "type": "integer"
+          },
+          "internKommentar": {
+            "type": "text",
+            "analyzer": "standard"
+          },
+          "kan_webpubliseres": {
+            "type": "keyword",
+            "store": true
+          },
+          "koblinger": {
+            "type": "integer",
+            "store": true
+          },
+          "materiale": {
+            "type": "keyword",
+            "store": true
+          },
+          "mediagruppe_enhets_id": {
+            "type": "integer"
+          },
+          "motiv": {
+            "type": "text",
+            "analyzer": "norwegian"
+          },
+          "old_foto_kort_id": {
+            "type": "integer",
+            "store": true
+          },
+          "old_mediagruppe_enhets_id": {
+            "type": "integer"
+          },
+          "personText": {
+            "type": "text",
+            "store": true,
+            "fielddata": true
+          },
+          "persondata": {
+            "type": "keyword",
+            "store": true
+          },
+          "positiv": {
+            "type": "integer",
+            "store": true
+          },
+          "registrert_dato": {
+            "type": "date",
+            "format": "yyyy-MM-dd"
+          },
+          "size": {
+            "type": "long"
+          },
+          "sjanger": {
+            "type": "keyword",
+            "store": true
+          },
+          "sted": {
+            "type": "text",
+            "analyzer": "standard",
+            "fielddata": true
+          },
+          "stedListe": {
+            "type": "keyword",
+            "store": true
+          },
+          "stedkommentar": {
+            "type": "text",
+            "analyzer": "norwegian",
+            "fielddata": true
+          },
+          "tema": {
+            "type": "keyword",
+            "store": true
+          },
+          "til_År": {
+            "type": "integer"
+          },
+          "user": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          }
       }
     }
   }

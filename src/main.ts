@@ -191,6 +191,16 @@ function createQuery(includeTextField) {
         ob.match = f_6;
         query.query.bool.must.push(ob);
     }
+    if (includeTextField && (<HTMLInputElement>document.getElementById("fieldSearch")).value != "" && (<HTMLInputElement>document.getElementById("fieldSearchSelect")).value == 'mediagruppe_enhets_id') {
+        let f7:any = new Object();
+        ob = new Object();
+        f7.mediagruppe_enhets_id = parseInt((<HTMLInputElement>document.getElementById('fieldSearch')).value);
+        ob.match = f7;
+        query.query.bool.must.push(ob);
+        alert(JSON.stringify(query,null,2));
+    }
+
+
     /* if (boolOr.bool.should.length > 0)
        query.query.bool.must.push(boolOr);*/
     if (includeTextField)
@@ -280,7 +290,7 @@ function fillResult(data) {
         //    window.location.href="gjenstand.html?id="+resultElastic.getSingleFieldFromDoc(docs[0], "museumKey");
         //   return;
     }
-
+//mediagruppe_enhets_id 
     for (var temp = 0; temp < docs.length; temp++) {
         //    var pA = resultElastic.getArrayFromDoc(docs[temp], "fotos"); Foto-fil
         var gj = resultElastic.getSingleFieldFromDoc(docs[temp], "motiv"); //xxxxx
@@ -289,7 +299,7 @@ function fillResult(data) {
             gj = resultElastic.getSingleFieldFromDoc(docs[temp], "sted"); //xxxxx
         if (gj == "")
             gj = resultElastic.getSingleFieldFromDoc(docs[temp], "alledata");
-        insertInResultTable("resultTable", resultElastic.getSingleFieldFromDoc(docs[temp], "filnavn"), temp, resultElastic.getSingleFieldFromDoc(docs[temp], "foto_kort_id"), gj, columnsInResult, "175px", "small");
+        insertInResultTable(resultElastic.getSingleFieldFromDoc(docs[temp], "mediagruppe_enhets_id"),"resultTable", resultElastic.getSingleFieldFromDoc(docs[temp], "filnavn"), temp, resultElastic.getSingleFieldFromDoc(docs[temp], "foto_kort_id"), gj, columnsInResult, "175px", "small");
         //  else
         //    insertInResultTable("resultTable", pA[0], temp, resultElastic.getSingleFieldFromDoc(docs[temp], "museumKey"), gj[0], columnsInResult, "150px", "small");
     }
@@ -302,6 +312,7 @@ function insertContentIntoRelationTable(table, content) {
     var cell1 = row.insertCell(0);
     cell1.innerHTML = content;
 }
+
 function postPhpMain(formData, callBack) {
     $.ajax({
         url: Tools.urlToNode + "PassPost",
@@ -316,6 +327,7 @@ function postPhpMain(formData, callBack) {
         dataType: "json"
     });
 }
+
 /*
 function postPhpMain(formData, callBack) {
   $.ajax({
@@ -333,7 +345,7 @@ function postPhpMain(formData, callBack) {
   });
 }
 */
-function insertInResultTable(tableId, filename, nr, id, name, cellsprRow, width, type) {
+function insertInResultTable(mediegruppeId,tableId, filename, nr, id, name, cellsprRow, width, type) {
     //    let cellsprRow:number= 2;
     let table:any = document.getElementById(tableId);
     let row:any;
@@ -346,11 +358,12 @@ function insertInResultTable(tableId, filename, nr, id, name, cellsprRow, width,
     cell1.setAttribute("class", "cellLabel"); //For Most Browsers
     cell1.setAttribute("className", "cellLabel");
     cell1.setAttribute("style", "vertical-align:top;");
-    var img = "<img  onload='calcPhotoSize(150,200,\"img" + nr + "\")' id='img" + nr + "' src='http://www.unimus.no/felles/bilder/web_hent_bilde.php?filename=" + encodeURIComponent(filename) + "&type=" + type + "' height=" + width + "/>";
-    //  var img = "<img  onload='calcPhotoSize(175,200,\"img"+nr+"\")' id='img"+nr+ "' src='http://www.unimus.no/felles/bilder/web_hent_bilde.php?filename=" + filename + "&type=" + type + "'/>";
+//    var img = "<img  onload='calcPhotoSize(150,200,\"img" + nr + "\")' id='img" + nr + "' src='http://www.unimus.no/felles/bilder/web_hent_bilde.php?filename=" + encodeURIComponent(filename) + "&type=" + type + "' height=" + width + "/>";
+
+//https://nabu.usit.uio.no/muv/mediagroups/12483244/image?type=small
+
+    var img = "<img  onload='calcPhotoSize(150,200,\"img" + nr + "\")' id='img" + nr + "' src='https://nabu.usit.uio.no/muv/mediagroups/"+mediegruppeId+"/image?type="+type+"' height=" + width + "/>";
     var aref = "<a target='_blank' href='foto.html?id=" + id + "'>" + img + "</a>";
-    //    cell1.innerHTML = "<img src='http://www.unimus.no/felles/bilder/web_hent_bilde.php?filename="+filename+"&type=thumbnail&'/>";
-    //   cell1.innerHTML = aref + "<br>" + name;
     if (name.length > 30)
         name = name.substring(0, 30) + "..";
     cell1.innerHTML = name + "<br>" + aref;
