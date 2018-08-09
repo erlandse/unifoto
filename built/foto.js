@@ -1,39 +1,19 @@
 var wheelInstance2 = null;
 var wheelInstance3 = null;
 var wheelInstance4 = null;
-var wheelInstance5 = null;
 var elastic = null;
-//import ElasticClass = require("./ElasticClass");
 var id = 2;
 var doc;
-var eventIndex = -1;
-var eventArray = null;
-var photoArray = null;
-var photoEventIndex = 0;
 var tools;
-var elasticLinks = null;
-var importQuery = "";
-var artifactPos = 0;
-var noSearchList = false;
 var spaceSplitter = new RegExp("([\\s]+)", "g");
 var user = "";
 var docArray = null;
 var docIndex = -1;
 var changed = false;
-//var defaultTerm = JSON.parse
-//og her er den samme funktion i gjenstand.ts
 var nameListQuery = {
     "tags": {
         "terms": {
             "field": "persondata",
-            "include": ""
-        }
-    }
-};
-var fotoListQuery = {
-    "tags": {
-        "terms": {
-            "field": "fotograf",
             "include": ""
         }
     }
@@ -384,7 +364,6 @@ function insertFields() {
     for (var temp = 0; temp < arr.length; temp++) {
         Tools.addOption(elSel, arr[temp], arr[temp]);
     }
-    64;
     arr = elastic.getArrayFromDoc(doc, "persondata");
     elSel = document.getElementById('nameSelect');
     for (var temp = 0; temp < arr.length; temp++) {
@@ -973,8 +952,9 @@ function hasMotherChildren(source) {
 function hasChildrenResult(data) {
     if (data.hits.hits.length == 0)
         document.getElementById('harKoblingerId').innerHTML = "";
-    else
+    else {
         document.getElementById('harKoblingerId').innerHTML = "**";
+    }
 }
 function getURL(url) {
     $.ajax({
