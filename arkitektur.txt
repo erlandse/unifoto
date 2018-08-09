@@ -1,0 +1,36 @@
+unifoto kører på nabu.usit.uio.no/khm/muv/unifoto (itfds-prod04)
+Udviklingsfilerne ligger på itfds-utv01 var/www/html/morten/unifoto
+Læsning, opdateringer sletning går gennem noden unifotonode (service)  på nabu.usit.uio.no.
+unifotonode opdaterer postgres-basen og kalder elasticapi på prod-03, der håndterer rene elastic-kald. 
+unifotonode sørger også for at refreshe elasticsearch indekset ved opdatering.
+unifotonode kontaktes via proxy kald på nabu.usit.uio.no localhost:40000
+
+Filer på prod04:
+I etc/httpd/conf.d ligger proxypass filen unifotonode.conf der redirecter unifotonode kald til localhost:40000
+I etc/systemd/system ligger unifotonode.service filen så man kan starte og stoppe noden.
+Noden ligger på /var/www/html/nodes/unifotonode/Server.js
+Udviklings-koden ligger på itfds-utv01 /var/www/html/unifotonode
+
+
+elasticapi på prod03 er en proxypass der sender videre til port 40002
+der modtager alle kald og ruter dem videre til elasticsearch. PT er den sat op til CORS, men det giver egentlig ikke nogen mening så jeg tror jeg fjerner det
+
+Filer på itfds-prod03:
+I etc/httpd/conf.d ligger proxy pass filen elasticapi.conf der redirecter elasticapi kald til port 40002
+I etc/systemd/system ligger elasticapi.service filen der starter og stopper noden.
+Noden ligger på  /var/www/html/nodestuff/elastic/elasicapi
+Udviklingskoden ligger på itfds-utv01 /var/www/html/morten/elasticapi.
+
+PUBLICERING:
+Publicering er mulig ved at man trykker på en knap i hovedvinduet i Unifoto.
+Fra hovedvinduet kaldes unifotonode, der udfører et kald til noden publishphoto.
+På itfds-prod04 ligger noden  på: 
+/var/www/html/nodes/publishphoto/Server.js
+Den samme node ligger på utv01.uio.no på:
+/var/www/html/morten/publishphoto/Server.js
+
+Noden gør følgende: Der ligger 2 indekser som der switches imellem. Hvis det aktive indeks er foto1 gøres følgende:
+Indekset foto2 slettes
+Indekset foto2 oprettes igen
+Indekset foto2 opdateres med de poster der skal publiceres
+Indekset fotobase sættes til at pege på foto2

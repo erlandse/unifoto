@@ -42,5 +42,6 @@ var Tools = /** @class */ (function () {
     };
     //  static urlToNode = "https://nabu.usit.uio.no/unifotonode/";
     Tools.urlToNode = "http://itfds-utv01.uio.no/postgres/";
+    Tools.publishCommand = "/usr/bin/node /var/www/html/morten/publishphoto/Server.js";
     return Tools;
 }());

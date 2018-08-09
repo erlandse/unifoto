@@ -1,17 +1,12 @@
-var checkbox = null;
-var checkboxArray = null;
 var defaultObj = null;
 var runQuery = null;
 var spaceSplitter = new RegExp("([\\s]+)", "g");
 var pagePos = 0;
 var pageSize = 12;
 var resultElastic;
-var randomNumber = 0;
 var wheelInstance = null;
 var rowsInResult = 0;
 var columnsInResult = 0;
-var museumArray = null;
-var firstTime = false;
 var spaceSplitter = new RegExp("([\\s]+)", "g");
 String.prototype.endsWith = function (pattern) {
     var d = this.length - pattern.length;
@@ -38,8 +33,6 @@ function mainInitialize() {
     });
     continueInitialize();
 }
-//q=hasPhoto=1
-//test kommntar
 function insertKeyword() {
     //    (<HTMLInputElement> document.getElementById('inputField')).value = (<HTMLInputElement> document.getElementById('inputField')).value + " " + (<HTMLSelectElement> document.getElementById('keywordList')).value.trim();
     search();
@@ -57,11 +50,6 @@ function insertNavigationLinks(data) {
       let table: HTMLTableElement = <HTMLTableElement>document.getElementById('navigationTable');
       displayNavigationList();*/
     setToZero();
-}
-function displayNavigationList() {
-    /*  document.getElementById('navigationTable').innerHTML="";
-      let table: HTMLTableElement = <HTMLTableElement>document.getElementById('navigationTable');
-      insertContentIntoRelationTable(table,"<br>");*/
 }
 function insertWordSearch(query) {
     var ob;
@@ -197,7 +185,6 @@ function createQuery(includeTextField) {
         f7.mediagruppe_enhets_id = parseInt(document.getElementById('fieldSearch').value);
         ob.match = f7;
         query.query.bool.must.push(ob);
-        alert(JSON.stringify(query, null, 2));
     }
     /* if (boolOr.bool.should.length > 0)
        query.query.bool.must.push(boolOr);*/
@@ -520,4 +507,23 @@ function qLookForFileName(event) {
         search();
         return;
     }
+}
+function publishCommand() {
+    var res = confirm('Ønsker du at publisere endringerne?');
+    if (res == false)
+        return;
+    alert('Fotobasen vil nu blive publisert med alle endringer\nTa en kopp kaffe!');
+    var formData = new Object();
+    formData.command = Tools.publishCommand;
+    $.ajax({
+        url: Tools.urlToNode + "runCmd",
+        type: 'post',
+        data: formData,
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert('status:' + XMLHttpRequest.status + ', status text: ' + XMLHttpRequest.statusText + " errorthrown " + errorThrown);
+        },
+        success: function (data) {
+            alert(data);
+        }
+    });
 }
