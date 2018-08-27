@@ -40,6 +40,7 @@ var Tools = /** @class */ (function () {
         else
             return results[1];
     };
+    //  static publishCommand = "/usr/bin/node /var/www/html/nodes/publishphoto/Server.js";
     //  static urlToNode = "https://nabu.usit.uio.no/unifotonode/";
     Tools.urlToNode = "http://itfds-utv01.uio.no/postgres/";
     Tools.publishCommand = "/usr/bin/node /var/www/html/morten/publishphoto/Server.js";

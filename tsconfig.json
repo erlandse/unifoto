@@ -12,6 +12,8 @@
         "./src/main.ts",
         "./src/JsonTool.ts",
         "./src/agg.ts",
-        "./src/wheel.ts"
+        "./src/wheel.ts",
+        "./src/upload.ts"
+        
     ]
 }

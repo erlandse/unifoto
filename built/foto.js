@@ -974,6 +974,3 @@ function getURL(url) {
         },
     });
 }
-function test(data) {
-    alert("hest");
-}
