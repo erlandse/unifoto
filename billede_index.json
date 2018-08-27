@@ -53,14 +53,6 @@
             "type": "integer",
             "store": true
           },
-          "fotograf": {
-            "type": "keyword",
-            "store": true
-          },
-          "fotografRolle": {
-            "type": "keyword",
-            "store": true
-          },
           "fra_År": {
             "type": "integer"
           },
@@ -101,10 +93,6 @@
           },
           "persondata": {
             "type": "keyword",
-            "store": true
-          },
-          "positiv": {
-            "type": "integer",
             "store": true
           },
           "registrert_dato": {

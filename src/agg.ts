@@ -25,4 +25,3 @@ var wordListQuery = {
 var sortPhoto = [
   { "foto_kort_id": "asc" }
 ];
-

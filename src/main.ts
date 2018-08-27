@@ -1,6 +1,6 @@
 var defaultObj = null;
 var runQuery = null;
-var spaceSplitter = new RegExp("([\\s]+)", "g");
+//var spaceSplitter = new RegExp("([\\s]+)", "g");
 var pagePos = 0;
 var pageSize = 12;
 var resultElastic;
@@ -542,3 +542,20 @@ function publishCommand() {
     });
 }
 
+function getActiveIndex() {
+    $.ajax({
+        url: Tools.urlToNode+"fotobase",
+        type: 'get',
+//        data: body,
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert('status:' + XMLHttpRequest.status + ', status text: ' + XMLHttpRequest.statusText + " errorthrown " + errorThrown);
+        },
+        success: function (data) {
+            let key="";
+            for(key in data)
+              break;
+            alert(key);
+        },
+        dataType: "json"
+    });
+}
