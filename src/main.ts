@@ -70,6 +70,10 @@ function insertWordSearch(query) {
             f.alledata = words[temp];
             ob.wildcard = f;
         }
+        else if (words[temp].indexOf("-") != -1) {
+            f.alledata = words[temp];
+            ob.match_phrase = f;
+        }    
         else {
             f.alledata = words[temp];
             ob.match = f;
@@ -139,7 +143,6 @@ function createQuery(includeTextField) {
         f_3.foto_kort_id = (<HTMLInputElement>document.getElementById("fieldSearch")).value;
         ob.match = f_3;
         query.query.bool.should.push(ob);
-        //     query.query.bool.must.push(ob);
         return query;
     }
     if (includeTextField && (<HTMLInputElement>document.getElementById("fieldSearch")).value != "" &&(<HTMLInputElement> document.getElementById("fieldSearchSelect")).value == 'internKommentar') {
@@ -194,6 +197,7 @@ function createQuery(includeTextField) {
        query.query.bool.must.push(boolOr);*/
     if (includeTextField)
         insertWordSearch(query);
+    //alert(JSON.stringify(query,null,2));    
     if ((<HTMLInputElement>document.getElementById('keywordList')).value != "") {
         let f_7:any = new Object();
         ob = new Object();
@@ -407,7 +411,7 @@ function setUpWheelWords(query, str) {
     var lemmaList = q.split("####");
     if (lemmaList.length == 0)
         return;
-    wordListQuery.tags.terms.include = lemmaList[lemmaList.length - 1] + ".*";
+    wListQuery.tags.terms.include = lemmaList[lemmaList.length - 1] + ".*";
     for (var temp = 0; temp < lemmaList.length - 1; temp++) {
         let f:any = new Object();
         let ob:any = new Object();
@@ -425,7 +429,7 @@ function changeWordwheel(event) {
     if (str.length > 1) {
         var query = createQuery(false);
         query = setUpWheelWords(query, str);
-        query.aggs = wordListQuery;
+        query.aggs = wListQuery;
         query.size = 0;
         let formData:any = new Object();
         formData.elasticdata = query;
@@ -559,3 +563,4 @@ function getActiveIndex() {
         dataType: "json"
     });
 }
+

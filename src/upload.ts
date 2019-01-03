@@ -1,13 +1,61 @@
 var rowList = null;
 let columns = 0;
 let returnMessage;
+let themeList:any = null;
 function uploadInitialize(){
   $(document).ready(function(){
    // do jQuery
   });
+  var formData:any = {};
+  formData.resturl = "unifotobase/billede/_search";
+  formData.elasticdata = aggObject;
+  postPhpUpload(formData, insertThemeList);
+
 //  document.getElementById("inputArea").value = "";
 }
 
+function seeForZero(){
+   let sel:any = <HTMLSelectElement>document.getElementById('keywordList');
+   let temp =0;
+   for (temp = 0; temp < sel.length; temp++)
+      if(sel.options[temp].selected == true && sel.options[temp].value == "")
+       break;
+   if(temp == sel.length)
+     return;
+   for (temp = 0; temp < sel.length; temp++)
+      sel.options[temp].selected = false;
+}
+
+function insertThemeList(data){
+    var es = new ElasticClass(data);
+    var keywordSelect:any = document.getElementById('keywordList');
+    var arr = es.getFacetFieldWithFacetName("tema");
+//    Tools.addOption(keywordSelect, "Intet valgt", "");
+    var opt;
+    opt = document.createElement("option");
+    opt.text  = "Intet valgt";
+    opt.value = "";
+    for (var temp = 0; temp < arr.length; temp++) {
+        if (arr[temp].key != "")
+            Tools.addOption(keywordSelect, arr[temp].key, arr[temp].key);
+    }
+    keywordSelect.add(opt,0);
+}
+
+function postPhpUpload(formData, callBack) {
+    $.ajax({
+        url: Tools.urlToNode + "PassPost",
+        type: 'post',
+        data: formData,
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert('status:' + XMLHttpRequest.status + ', status text: ' + XMLHttpRequest.statusText + " errorthrown " + errorThrown);
+        },
+        success: function (data) {
+            callBack(data);
+        },
+        dataType: "json"
+    });
+}
 
 let billedTemplate:any = {
     alledata:"",
@@ -64,6 +112,17 @@ function cleanString(str){
   return str;
 }
 
+function createThemeArray(){
+    let sel:any = <HTMLSelectElement>document.getElementById('keywordList');
+    let temp =0;
+    let arr = new Array();
+    for (temp = 1; temp < sel.length; temp++)
+       if(sel.options[temp].selected == true && sel.options[temp].value != "")
+        arr.push(sel.options[temp].value);
+    return arr;
+
+ }
+
 
 function upload(){
   returnMessage = "";
@@ -92,7 +151,12 @@ function upload(){
           return;
       }  
   }
-  if(confirm("Antal rækker er " + (rowList.length-jump) +" og antal kolonner er " + columns + ". Ønsker du at fortsætte?")==false)
+  themeList = createThemeArray();
+  alert("Temaer valgt:'"+themeList.join('; ')+"'");
+/*  if(x == 1)
+    return;
+*/
+  if(confirm("Og antal rækker er " + (rowList.length-jump) +" og antal kolonner er " + columns + ". Ønsker du at fortsætte?")==false)
     return;
   insertColumns(0);
 }
@@ -195,7 +259,7 @@ function insertPhoto(index,data){
   obj.kan_webpubliseres="0";
   obj.registrert_dato = hentDato();
   obj.bruker="nypost";
-
+  obj.tema = cloneJSON(themeList);
   let formData:any = new Object();
   formData.foto_kort_id = obj.foto_kort_id;
   formData.content = obj;
@@ -207,7 +271,6 @@ function insertPhoto(index,data){
           alert('status:' + XMLHttpRequest.status + ', status text: ' + XMLHttpRequest.statusText + " errorthrown " + errorThrown);
       },
       success: function (data) {
-        alert(JSON.stringify(data,null,2));
         insertColumns(index+1);
     },
       dataType: "json"

@@ -20,19 +20,29 @@
 }
 .pageFooter{
   width:100%;
-  height:110px;
+  height:10px;
   background-color: #ffffff;
 }
 
 .mainContent{
   display:flex;
-  height:calc(100% - 250px);
+  height:calc(100% - 1000px);
   background-color:#eeeeee;
   margin-left:10px;
   margin-right:10px;
   border:1px solid;
   border-color:#aaaaaa;  
 }
+.editContent{
+  display:flex;
+  height:calc(100% - 10px);
+  background-color:#eeeeee;
+  margin-left:10px;
+  margin-right:10px;
+  border:1px solid;
+  border-color:#aaaaaa;  
+}
+
 
 .allButLinks{
   display:flex;

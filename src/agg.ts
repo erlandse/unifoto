@@ -13,11 +13,22 @@ var aggObject = {
   }
 };
 
+var wListQuery = {
+  "tags": {
+    "terms": {
+      "field": "alledata",
+      "include": "",
+      "order" : { "_term" : "asc" }
+    }
+  }
+};
+
 var wordListQuery = {
     "tags": {
       "terms": {
         "field": "alledata",
         "include": ""
+        
       }
     }
 };
@@ -25,3 +36,4 @@ var wordListQuery = {
 var sortPhoto = [
   { "foto_kort_id": "asc" }
 ];
+

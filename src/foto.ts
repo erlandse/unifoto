@@ -10,6 +10,7 @@ var user = "";
 var docArray = null;
 var docIndex = -1;
 var changed = false;
+let personArray = new Array();
 
 var nameListQuery = {
     "tags": {
@@ -201,7 +202,8 @@ function continueUpload(data) {
     wheelInstance3 = new Wheel('wheelInstance3', 'wheel2', 'ul2', 'lookupIndex3', 'namesId');
     wheelInstance4 = new Wheel('wheelInstance4', 'wheel4', 'ul4', 'lookupIndex4', 'stedListeId');
     document.getElementById('tagline').innerHTML = "";
-    resize2();
+//    resize2();
+//    setPhoto();
 }
 function lookupIndex2(string) {
   (<HTMLInputElement>document.getElementById('topicId')).value = string;
@@ -251,8 +253,8 @@ function deleteTopic() {
     Tools.removeOptionSelected("topicSelect");
     changed = true;
 }
-
 function postPhp(formData, callBack) {
+
     $.ajax({
         url: Tools.urlToNode + "PassPost",
         type: 'post',
@@ -339,7 +341,14 @@ function loadContent(data) {
         doc = docs[0];
     insertFields();
     changed = false;
+    docIndex == 0?(<HTMLButtonElement>document.getElementById('previousPost')).disabled = true:(<HTMLButtonElement>document.getElementById('previousPost')).disabled = false;
+    if(docIndex == (docArray.length-1)){
+        (<HTMLButtonElement>document.getElementById('nextPost')).disabled = true;
+    }else
+     (<HTMLButtonElement>document.getElementById('nextPost')).disabled = false;
+   resize2();  
 }
+
 function clearFields() {
   (<HTMLInputElement>document.getElementById('stedListeId')).value = "";
   (<HTMLInputElement>document.getElementById('stedkommentar')).value = "";
@@ -405,7 +414,7 @@ function insertFields() {
     (<HTMLInputElement>document.getElementById('positivt')).value = "Nei";
     (<HTMLInputElement>document.getElementById('materiale')).value = elastic.getSingleFieldFromDoc(doc, "materiale");*/
     changed = false;
-    setPhoto();
+   // setPhoto();
     hasMotherChildren(doc._source);
     //http://musit-win-p01.uio.no/api/media/mediagroups/14267691/persons
     //mediagruppe_enhets_id
@@ -416,6 +425,7 @@ function insertFields() {
 }
 
 function appendPhotograph(data) {
+    personArray = data;
     Tools.removeAllOptions("fotografList");
     let sel: any = document.getElementById("fotografList");
     for (let temp = 0; temp < data.length; temp++)
@@ -437,7 +447,7 @@ function appendAnalogInfo(data){
       (<HTMLInputElement>document.getElementById('analogt')).value = "ja";
     (<HTMLInputElement>document.getElementById('positivt')).value = data[0].positive;
     (<HTMLInputElement>document.getElementById('materiale')).value = data[0].baseMaterial;
-  
+    resize2();
 }
 
 function setPhoto() {
@@ -447,9 +457,17 @@ function setPhoto() {
     if(elastic == null)
       return;
     var filename = encodeURIComponent(elastic.getSingleFieldFromDoc(doc, "filnavn"));
+    //mediagruppe_enhets_id
+    var mediegruppeId = elastic.getSingleFieldFromDoc(doc, "mediagruppe_enhets_id");
+
+    (<HTMLImageElement>document.getElementById('photoCalculate')).src ="https://nabu.usit.uio.no/muv/mediagroups/"+mediegruppeId+"/image?type=jpeg";
+    (<HTMLImageElement>document.getElementById('photoId')).src = "https://nabu.usit.uio.no/muv/mediagroups/"+mediegruppeId+"/image?type=jpeg";
+    (<any>document.getElementById('photoRefId')).href = "https://nabu.usit.uio.no/muv/mediagroups/"+mediegruppeId+"/image?type=jpeg";
+    ///old call
+    /*
     (<HTMLImageElement>document.getElementById('photoCalculate')).src = "http://www.unimus.no/felles/bilder/web_hent_bilde.php?filename=" + filename + "&type=jpeg&";
     (<HTMLImageElement>document.getElementById('photoId')).src = "http://www.unimus.no/felles/bilder/web_hent_bilde.php?filename=" + filename + "&type=jpeg&";
-    (<any>document.getElementById('photoRefId')).href = "http://www.unimus.no/felles/bilder/web_hent_bilde.php?filename=" + filename + "&type=jpeg&";
+    (<any>document.getElementById('photoRefId')).href = "http://www.unimus.no/felles/bilder/web_hent_bilde.php?filename=" + filename + "&type=jpeg&";*/
     (<any>document.getElementById('photoRefId')).target = "_blank";
 }
 function isISODate() {
@@ -606,6 +624,9 @@ function buildAlleData(ob) {
                 result += " " + b;
         }
     }
+
+    for (let i = 0;i< personArray.length; i++)
+      result += " " +personArray[i].name
     return result;
 }
 function pad(n, width, z) {
@@ -662,8 +683,8 @@ function getObjectOffset(element) {
 }
 ;
 function placeFooter() {
-    var footElement = document.getElementById("app-footer");
-    footElement.style.width = window.innerWidth - (50) + "px";
+/*    var footElement = document.getElementById("app-footer");
+    footElement.style.width = window.innerWidth - (50) + "px";*/
 }
 
 function changeSubjectWordwheel(event) {
@@ -836,6 +857,7 @@ function hasChanged() {
         changed = true;
     if ((<HTMLInputElement>document.getElementById('sjangerSelect')).value != elastic.getSingleFieldFromDoc(doc, "sjanger"))
         changed = true;
+   //xxx     
 }
 function clearWheels() {
     wheelInstance2.clearUl();

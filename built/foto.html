@@ -58,7 +58,7 @@
 </div><!--slut wrapper-->  
 
 </div><!--topheader-->
-<div id='mainContent' class='mainContent'>
+<div id='editContent' class='editContent'>
     <div id='fieldsDiv' class='fieldsDiv'>
     <table border='1' width='100%'>
       <tr><td class='labelClass'>Filnavn:<input type='text'  size='20'  id='filnavn' readonly/></td>
@@ -74,7 +74,7 @@
         &nbsp;&nbsp;Tast område: <input   type='text'  size='20'  id='delSted' onkeyup='changePlaceWordwheel(event)'/></td></tr>
       <tr><td class='labelClass'>Sted Kommentar:</td><td colspan='2' align='left'><input   type='text'  size='60'  id='stedkommentar' /></td></tr>
       <tr><td class='labelClass'>Personer (Efternavn, Fornavn):</td><td align='left'><input   type='text'  size='25'  id='namesId' align='left' onkeyup='changeNameWordwheel(event)' ><input type='button' value='>>' onclick='addName()'></td>
-      <td><select id='nameSelect'></select><br><input type='button' value='Slett' onclick='deleteName()'/></td></tr>
+      <td><select id='nameSelect'></select>&nbsp;&nbsp;<input type='button' value='Slett' onclick='deleteName()'/></td></tr>
       <tr><td class='labelClass'>Datering:</td><td>Fra år:<input type='text' id='fromYearId' size='10'>&nbsp;&nbsp;Til år:<input type='text' id='toYearId' size='10'></td><td>Dateringsdato yyyy-mm-dd:<input type='text' id='registeredYearId' size='10'></td></tr>
       
       <tr><td class='labelClass'>Sjanger:</td>
@@ -88,9 +88,9 @@
         </select></td>
       </tr>
       <tr><td class='labelClass'>Emne:</td><td align='left'><input   type='text'  size='15'  id='topicId' align='left' onkeyup='changeSubjectWordwheel(event)'/><input type='button' value='>>' onclick='addTopic()'></td>
-        <td><select id='topicSelect'></select><br><input type='button' value='Slett' onclick='deleteTopic()'/></td></tr>
+        <td><select id='topicSelect'></select>&nbsp;&nbsp;<input type='button' value='Slett' onclick='deleteTopic()'/></td></tr>
         <tr><td class='labelClass'>Koblinger:<span id='harKoblingerId' style='color:red'></span></td><td align='left'><input   type='text'  size='15'  id='koblingText' align='left'><input type='button' value='>>' onclick='addKobling()'></td>
-          <td><select id='koblingSelect'></select><br><input type='button' value='Slett' onclick='deleteKobling()'/></td></tr>
+          <td><select id='koblingSelect'></select>&nbsp;&nbsp;<input type='button' value='Slett' onclick='deleteKobling()'/></td></tr>
           
       <tr><td class='labelClass'>Fotograf:</td>
       <td colspan='2'><select id='fotografList'></select></td></tr>
@@ -111,8 +111,8 @@
             </td>
          </tr>
    
-        <tr><td><input type='button' value="Se forrige" onclick='previousPost(true)'></td><td><input type='button' value="Lagre" onclick='savePostOldFashion(0)'>&nbsp;&nbsp;
-          <input type='button' value="Lagre og hent neste" onclick='savePostOldFashion(true)'> </td><td><input type='button' value="Se neste" onclick='nextPost(true)'></td></tr> 
+        <tr><td><input type='button' value="Se forrige" id='previousPost' onclick='previousPost(true)'></td><td><input type='button' value="Lagre" onclick='savePostOldFashion(0)'>&nbsp;&nbsp;
+          <input type='button' value="Lagre og hent neste" onclick='savePostOldFashion(true)'> </td><td><input type='button' value="Se neste" id='nextPost' onclick='nextPost(true)'></td></tr> 
     </table>  
     </div>        
     <div id='fotoDiv' class='fotoDiv'>
@@ -124,7 +124,7 @@
     </div>        
 </div><!--maincontent-->
 
-<div id='pageFooter' class='pageFooter'>
+<!--div id='pageFooter' class='pageFooter'>
 
 
 <div>
@@ -146,7 +146,7 @@
 
 
 
-</div>
+</div-->
 
 </div><!--grid container-->  
 

@@ -12,6 +12,15 @@ var aggObject = {
         }
     }
 };
+var wListQuery = {
+    "tags": {
+        "terms": {
+            "field": "alledata",
+            "include": "",
+            "order": { "_term": "asc" }
+        }
+    }
+};
 var wordListQuery = {
     "tags": {
         "terms": {

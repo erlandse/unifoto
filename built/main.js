@@ -68,6 +68,10 @@ function insertWordSearch(query) {
             f.alledata = words[temp];
             ob.wildcard = f;
         }
+        else if (words[temp].indexOf("-") != -1) {
+            f.alledata = words[temp];
+            ob.match_phrase = f;
+        }
         else {
             f.alledata = words[temp];
             ob.match = f;
@@ -137,7 +141,6 @@ function createQuery(includeTextField) {
         f_3.foto_kort_id = document.getElementById("fieldSearch").value;
         ob.match = f_3;
         query.query.bool.should.push(ob);
-        //     query.query.bool.must.push(ob);
         return query;
     }
     if (includeTextField && document.getElementById("fieldSearch").value != "" && document.getElementById("fieldSearchSelect").value == 'internKommentar') {
@@ -190,6 +193,7 @@ function createQuery(includeTextField) {
        query.query.bool.must.push(boolOr);*/
     if (includeTextField)
         insertWordSearch(query);
+    //alert(JSON.stringify(query,null,2));    
     if (document.getElementById('keywordList').value != "") {
         var f_7 = new Object();
         ob = new Object();
@@ -398,7 +402,7 @@ function setUpWheelWords(query, str) {
     var lemmaList = q.split("####");
     if (lemmaList.length == 0)
         return;
-    wordListQuery.tags.terms.include = lemmaList[lemmaList.length - 1] + ".*";
+    wListQuery.tags.terms.include = lemmaList[lemmaList.length - 1] + ".*";
     for (var temp = 0; temp < lemmaList.length - 1; temp++) {
         var f = new Object();
         var ob = new Object();
@@ -416,7 +420,7 @@ function changeWordwheel(event) {
     if (str.length > 1) {
         var query = createQuery(false);
         query = setUpWheelWords(query, str);
-        query.aggs = wordListQuery;
+        query.aggs = wListQuery;
         query.size = 0;
         var formData = new Object();
         formData.elasticdata = query;

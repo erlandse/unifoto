@@ -8,6 +8,7 @@
     <script type="text/javascript" charset="utf-8" src="JsonTool.js"></script>
     <script type="text/javascript" charset="utf-8" src="ElasticClass.js"></script>
     <script type="text/javascript" charset="utf-8" src="tools.js"></script>
+    <script type="text/javascript" charset="utf-8" src="agg.js"></script>
     <link href="upload.css" type="text/css" rel="stylesheet"/> 
     <link href="uio-app-top-bottom.css" type="text/css" rel="stylesheet" media="screen, print" />
     
@@ -32,6 +33,9 @@
 <table class='tableClass'  border='1'>
 <tr class='trResult'><th class='thResult' colspan='3'>Lim inn dataene i tekstfeltet</th><th class='thResult' colspan='3'>Output fra importen</th</tr>
 <tr><td colspan='3'><textarea id='inputArea'cols='50' rows='40'></textarea></td><td colspan='3'><textarea id='outputArea'cols='50' rows='40'></textarea></td></tr>
+<tr><td colspan='2'>Temaer:
+<select id='keywordList' style="max-width:200px;" size='4' multiple onkeyup="seeForZero()"></select>  
+</td></tr>
 </table>
 
 <div id='progressDiv' style="color:red;text-align:left;padding-left:50px"></div>

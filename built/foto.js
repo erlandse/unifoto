@@ -10,6 +10,7 @@ var user = "";
 var docArray = null;
 var docIndex = -1;
 var changed = false;
+var personArray = new Array();
 var nameListQuery = {
     "tags": {
         "terms": {
@@ -193,7 +194,8 @@ function continueUpload(data) {
     wheelInstance3 = new Wheel('wheelInstance3', 'wheel2', 'ul2', 'lookupIndex3', 'namesId');
     wheelInstance4 = new Wheel('wheelInstance4', 'wheel4', 'ul4', 'lookupIndex4', 'stedListeId');
     document.getElementById('tagline').innerHTML = "";
-    resize2();
+    //    resize2();
+    //    setPhoto();
 }
 function lookupIndex2(string) {
     document.getElementById('topicId').value = string;
@@ -326,6 +328,13 @@ function loadContent(data) {
         doc = docs[0];
     insertFields();
     changed = false;
+    docIndex == 0 ? document.getElementById('previousPost').disabled = true : document.getElementById('previousPost').disabled = false;
+    if (docIndex == (docArray.length - 1)) {
+        document.getElementById('nextPost').disabled = true;
+    }
+    else
+        document.getElementById('nextPost').disabled = false;
+    resize2();
 }
 function clearFields() {
     document.getElementById('stedListeId').value = "";
@@ -392,7 +401,7 @@ function insertFields() {
     (<HTMLInputElement>document.getElementById('positivt')).value = "Nei";
     (<HTMLInputElement>document.getElementById('materiale')).value = elastic.getSingleFieldFromDoc(doc, "materiale");*/
     changed = false;
-    setPhoto();
+    // setPhoto();
     hasMotherChildren(doc._source);
     //http://musit-win-p01.uio.no/api/media/mediagroups/14267691/persons
     //mediagruppe_enhets_id
@@ -402,6 +411,7 @@ function insertFields() {
     postAndGetPhp(formData, appendPhotograph);
 }
 function appendPhotograph(data) {
+    personArray = data;
     Tools.removeAllOptions("fotografList");
     var sel = document.getElementById("fotografList");
     for (var temp = 0; temp < data.length; temp++)
@@ -422,6 +432,7 @@ function appendAnalogInfo(data) {
     document.getElementById('analogt').value = "ja";
     document.getElementById('positivt').value = data[0].positive;
     document.getElementById('materiale').value = data[0].baseMaterial;
+    resize2();
 }
 function setPhoto() {
     document.getElementById('photoCalculate').onload = function () {
@@ -430,9 +441,16 @@ function setPhoto() {
     if (elastic == null)
         return;
     var filename = encodeURIComponent(elastic.getSingleFieldFromDoc(doc, "filnavn"));
-    document.getElementById('photoCalculate').src = "http://www.unimus.no/felles/bilder/web_hent_bilde.php?filename=" + filename + "&type=jpeg&";
-    document.getElementById('photoId').src = "http://www.unimus.no/felles/bilder/web_hent_bilde.php?filename=" + filename + "&type=jpeg&";
-    document.getElementById('photoRefId').href = "http://www.unimus.no/felles/bilder/web_hent_bilde.php?filename=" + filename + "&type=jpeg&";
+    //mediagruppe_enhets_id
+    var mediegruppeId = elastic.getSingleFieldFromDoc(doc, "mediagruppe_enhets_id");
+    document.getElementById('photoCalculate').src = "https://nabu.usit.uio.no/muv/mediagroups/" + mediegruppeId + "/image?type=jpeg";
+    document.getElementById('photoId').src = "https://nabu.usit.uio.no/muv/mediagroups/" + mediegruppeId + "/image?type=jpeg";
+    document.getElementById('photoRefId').href = "https://nabu.usit.uio.no/muv/mediagroups/" + mediegruppeId + "/image?type=jpeg";
+    ///old call
+    /*
+    (<HTMLImageElement>document.getElementById('photoCalculate')).src = "http://www.unimus.no/felles/bilder/web_hent_bilde.php?filename=" + filename + "&type=jpeg&";
+    (<HTMLImageElement>document.getElementById('photoId')).src = "http://www.unimus.no/felles/bilder/web_hent_bilde.php?filename=" + filename + "&type=jpeg&";
+    (<any>document.getElementById('photoRefId')).href = "http://www.unimus.no/felles/bilder/web_hent_bilde.php?filename=" + filename + "&type=jpeg&";*/
     document.getElementById('photoRefId').target = "_blank";
 }
 function isISODate() {
@@ -586,6 +604,8 @@ function buildAlleData(ob) {
                 result += " " + b;
         }
     }
+    for (var i_1 = 0; i_1 < personArray.length; i_1++)
+        result += " " + personArray[i_1].name;
     return result;
 }
 function pad(n, width, z) {
@@ -642,8 +662,8 @@ function getObjectOffset(element) {
 }
 ;
 function placeFooter() {
-    var footElement = document.getElementById("app-footer");
-    footElement.style.width = window.innerWidth - (50) + "px";
+    /*    var footElement = document.getElementById("app-footer");
+        footElement.style.width = window.innerWidth - (50) + "px";*/
 }
 function changeSubjectWordwheel(event) {
     if (wheelInstance2.handleWheel(event) == true)
@@ -813,6 +833,7 @@ function hasChanged() {
         changed = true;
     if (document.getElementById('sjangerSelect').value != elastic.getSingleFieldFromDoc(doc, "sjanger"))
         changed = true;
+    //xxx     
 }
 function clearWheels() {
     wheelInstance2.clearUl();
