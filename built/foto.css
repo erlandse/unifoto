@@ -36,6 +36,8 @@
 .editContent{
   display:flex;
   height:calc(100% - 10px);
+  flex-direction:row;
+  flex-wrap:nowrap;
   background-color:#eeeeee;
   margin-left:10px;
   margin-right:10px;
